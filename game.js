@@ -12,6 +12,13 @@ class Enemy {
     move() {
         this.gImage.pos.y += this.speed * this.dir * deltaTime;
     }
+    damage(d) {
+        this.hp -= d;
+        if (this.hp <= 0) {
+            nowScene.deleteImage(this.gImage);
+        }
+        //  TODO 진짜 오브젝트 삭제 버그 수정바람
+    }
 }
 
 testScene.init = function() {
@@ -33,8 +40,9 @@ testScene.checkCollision = function() {
             e.pos.y <= b.pos.y + b.image.height &&
             e.pos.y + e.image.height >= b.pos.y)
         {
+            this.deleteImage(this.bullets[i]);
             this.bullets.splice(i, 1);
-            this.enemy.hp--;
+            this.enemy.damage(1);
             console.log(this.enemy.hp);
         }
     }
@@ -74,6 +82,7 @@ testScene.update = function() {
     //  Bullet
     for (let i = 0; i < this.bullets.length; i++) {
         if (this.bullets[i].pos.x >= canvas.width) {
+            this.deleteImage(this.bullets[i]);
             this.bullets.splice(i, 1);
             continue;
         }

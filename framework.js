@@ -13,9 +13,11 @@ var keyDownFunc = function(e) {
     if (!keys.hasOwnProperty(e.code))
         keys[e.code] = 0;
 }
+
 var keyUpFunc = function(e) {
     Lkeys[e.code] = -1;
 }
+
 var updatekeys = function() {
     for (code in keys) {
         if (Lkeys[code] == 1 && keys[code] == 0) {
@@ -109,6 +111,14 @@ class Scene {
         this.sceneImageList.push(image);
         return image;
     }
+    deleteImage(image) {
+        for (let i = 0; i < this.sceneImageList.length; i++) {
+            if (Object.is(this.sceneImageList[i], image)) {
+                this.sceneImageList.splice(i, 1);
+                return 0;
+            }
+        }
+    }
     render() {
         for(let i = 0; i < this.sceneImageList.length; i++) {
             this.sceneImageList[i].render();
@@ -119,9 +129,13 @@ class Scene {
 var update = function() {
     nowScene.update();
 }
+
+
+
 var render = function() {
     nowScene.render();
 }
+
 var gameLoop = function() {
     RTime = Date.now();
     deltaTime = (RTime - LTime) / 1000;
